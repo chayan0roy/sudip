@@ -1,0 +1,12 @@
+.Batch {
+    width: 100%;
+}
+
+.Batch .BatchTop {
+    width: 100%;
+}
+
+.Batch .BatchBotom {
+    width: 100%;
+    flex-wrap: wrap;
+}

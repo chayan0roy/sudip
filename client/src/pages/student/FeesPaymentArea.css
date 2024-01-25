@@ -1,0 +1,71 @@
+.FeesPaymentArea {
+    height: 100%;
+    width: 100%;
+}
+
+.FeesPaymentArea .leftArea,
+.FeesPaymentArea .rightArea {
+    height: 100%;
+    width: 50%;
+    border-right: 1px solid black;
+}
+
+.FeesPaymentArea .leftArea .DetailsText {
+   font-size: 18px;
+   margin-left: 10px;
+}
+
+.FeesPaymentArea .rightArea form {
+    flex-direction: column;
+}
+
+.FeesPaymentArea .rightArea form .input_image_box {
+    width: 100%;
+    flex-direction: column;
+    position: relative;
+}
+
+.FeesPaymentArea .rightArea form .input_image_box img {
+    height: 50%;
+    max-width: 100%;
+}
+
+.FeesPaymentArea .rightArea form .input_image_box .image_input {
+    position: absolute;
+    height: 80%;
+    width: 50%;
+    opacity: 0;
+}
+
+
+
+
+
+
+
+.FeesPaymentArea .rightArea .input_text_box_Area,
+.FeesPaymentArea .rightArea .submitBtnArea {
+    width: 100%;
+    margin-top: 10%;
+}
+
+.FeesPaymentArea .rightArea .input_text_box_Area .input_box {
+    height: 30px;
+    width: 50%;
+    padding: 0 3%;
+    font-weight: bold;
+    font-size: 18px;
+    border: 2px solid black;
+}
+
+.FeesPaymentArea .rightArea .submitBtnArea button {
+    height: 40px;
+    width: 50%;
+    background-color: orange;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}

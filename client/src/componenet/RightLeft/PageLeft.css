@@ -1,0 +1,45 @@
+.dashboardLeft {
+    width: 20%;
+    height: 100%;
+    height: 100vh;
+    border-right: 1px solid black;
+}
+
+.dashboardLeft .profileImageArea {
+    width: 100%;
+    height: 25%;
+}
+
+.dashboardLeft .profileImageArea img {
+    width: 50%;
+}
+
+.dashboardLeft .profileShortDetails {
+    width: 100%;
+    height: 20%;
+}
+.dashboardLeft .profileShortDetails h1 {
+    text-align: center;
+}
+
+.dashboardLeft .profileShortDetails h3 {
+    text-align: center;
+}
+
+.dashboardLeft .linkArea {
+    height: 51%;
+    overflow-y: scroll;
+    padding: 0 10%;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 20px;
+
+}
+
+.dashboardLeft .linkArea .navLink {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+}

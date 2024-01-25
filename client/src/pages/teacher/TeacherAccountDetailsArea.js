@@ -1,0 +1,51 @@
+import './TeacherAccountDetailsArea.css'
+import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+
+export default function TeacherAccountDetailsArea({ who }) {
+
+	const [rightData, setRightData] = useState();
+
+	useEffect(() => {
+		getAccountRightData();
+	}, []);
+
+	const getAccountRightData = async () => {
+		const token = Cookies.get("auth_token");
+		if (token) {
+			const formData = new FormData();
+			formData.append("token", token);
+			formData.append("who", who);
+			const result = await axios.post("http://localhost:5000/getAccountRightData", formData,);
+			setRightData(result.data);
+		}
+	}
+
+
+	return (
+		<>
+			{
+				rightData
+					?
+					<div className='studentDetailsArea'>
+						<div className='studentDetailsAreaTop flex'>
+							<img src={`http://localhost:5000/files/`+rightData.profileIMG}></img>
+							<h1>{rightData.teacherName}</h1>
+						</div>
+						<div className='studentDetailsAreaBottom flex'>
+							<div className='studentDetails'>
+								<h3><span>Teacher Name :</span><span className='DetailsText'>{rightData.teacherName}</span></h3>
+								<h3><span>Mobile Number :</span><span className='DetailsText'>{rightData.teacherMobileNumber}</span></h3>
+								<h3><span>Email Address :</span><span className='DetailsText'>{rightData.teacherEmail}</span></h3>
+								<h3><span>Address :</span><span className='DetailsText'>{rightData.teacherAddress}</span></h3>
+							</div>
+						</div>
+					</div>
+					:
+					<></>
+			}
+		</>
+	)
+}
+
