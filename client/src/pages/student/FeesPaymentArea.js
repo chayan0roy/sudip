@@ -1,23 +1,19 @@
-import "./FeesPaymentArea.css"
-import formData from 'form-data';
-import Cookies from 'js-cookie';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import defaultAccountImg from '../../assets/accont.png'
+import "./FeesPaymentArea.css";
+import formData from "form-data";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import defaultAccountImg from "../../assets/accont.png";
 
-export default function FeesPaymentArea({ who }) {
-
+export default function FeesPaymentArea() {
 	const [feesPaymentDetails, setFeesPaymentDetails] = useState();
 	const [file, setFile] = useState("");
-	const [userNumber, setUserNumber] = useState();
+	const [amount, setAmount] = useState();
 	const [viewImage, setViewImage] = useState(defaultAccountImg);
 
+
 	useEffect(() => {
-		if(who == 'user') {
-			getStudentFeesPaymentDetails();
-		} else {
-			getFeesPaymentDetails();
-		}
+		getStudentFeesPaymentDetails();
 	}, []);
 
 	const getStudentFeesPaymentDetails = async () => {
@@ -30,75 +26,87 @@ export default function FeesPaymentArea({ who }) {
 		}
 	}
 
-
-	const getFeesPaymentDetails = async () => {
-		const token = Cookies.get("auth_token");
-		if (token) {
-			const formData = new FormData();
-			formData.append("token", token);
-			const result = await axios.post("http://localhost:5000/getFeesPaymentDetails", formData,);
-			setFeesPaymentDetails(result.data);
-		}
-	}
-
-
+	console.log(feesPaymentDetails);
 	const convertUserIMG = (e) => {
-		setFile(e.target.files[0])
+		setFile(e.target.files[0]);
 		var fileReader = new FileReader();
 		fileReader.readAsDataURL(e.target.files[0]);
 		fileReader.onload = () => {
 			setViewImage(fileReader.result);
-		}
-	}
+		};
+	};
 
 	const submitImage = async (e) => {
 		e.preventDefault();
+		const token = Cookies.get("auth_token");
 		const formData = new FormData();
-		formData.append("userNumber", userNumber);
+		formData.append("token", token);
+		formData.append("amount", amount);
 		formData.append("file", file);
 
-		const result = await axios.post("http://localhost:5000/upload-files", formData);
-		if (result.data.status == "ok") {
+		const result = await axios.post("http://localhost:5000/uploadFiles", formData);
+		setFile();
+		setAmount();
+		if (result.data.status == true) {
 			setViewImage(defaultAccountImg);
-			setUserNumber();
-			setFile("");
 			alert("Uploaded Successfully!!!");
 		}
 	};
 
 	return (
-		<>
+		<div className="FeesPaymentArea flex">
 			{
-				(who == 'user')
+				feesPaymentDetails
 					?
-					<div className='FeesPaymentArea flex'>
-						<div className='leftArea'>
-							<h3><span>Your Course Fees :</span><span className='DetailsText'>5000</span></h3>
-							<h3><span>Your Due Fees :</span><span className='DetailsText'>3000</span></h3>
-							<h3><span>Your Total Fees :</span><span className='DetailsText'>2000</span></h3>
+					<>
+						<div className="leftArea">
+							<h3>
+								<span>Your Admission Fees :</span>
+								<span className="DetailsText">{feesPaymentDetails.admissionFees}</span>
+							</h3>
+							<h3>
+								<span>Your Monthly Fees :</span>
+								<span className="DetailsText">{feesPaymentDetails.monthlyFees}</span>
+							</h3>
+							<h3>
+								<span>Your Due Fees :</span>
+								<span className="DetailsText">{feesPaymentDetails.dueFees}</span>
+							</h3>
 						</div>
-						<div className='rightArea'>
-							<form className="flex" onSubmit={submitImage}>
-								<h4>Upload Payment Screenshot</h4>
-								<div className="input_image_box flex">
-									<img src={viewImage} />
-									<input type="file" class="image_input" required onChange={convertUserIMG} />
-								</div>
-								<div className="input_text_box_Area flex">
-									<input type="number" className="input_box" placeholder="Enter paid amount" required onChange={(e) => setUserNumber(e.target.value)} />
-								</div>
-								<div className="submitBtnArea flex">
-									<button class="" type="submit">Submit</button>
-								</div>
-							</form>
-						</div>
-					</div>
+					</>
 					:
-					<div className='FeesPaymentArea flex'>
-						
-					</div>
+					<></>
 			}
-		</>
-
-	)
+			<div className="rightArea">
+				<form className="flex" onSubmit={submitImage}>
+					<h4>Upload Payment Screenshot</h4>
+					<div className="input_image_box flex">
+						<img src={viewImage} />
+						<input
+							type="file"
+							class="image_input"
+							required
+							onChange={convertUserIMG}
+						/>
+					</div>
+					<div className="input_text_box_Area flex">
+						<input
+							type="number"
+							className="input_box"
+							placeholder="Enter paid amount"
+							required
+							value={amount}
+							onChange={(e) => setAmount(e.target.value)}
+						/>
+					</div>
+					<div className="submitBtnArea flex">
+						<button class="" type="submit">
+							Submit
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	);
 }
+

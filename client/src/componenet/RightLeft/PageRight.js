@@ -33,14 +33,14 @@ import ShowFeesPaymentHistoryList from '../../pages/batch/teacher/ShowFeesPaymen
 
 
 
-export default function PageRight({ who }) {
+export default function PageRight({ who, setIsLogin }) {
 
 	return (
 		<div className='dashboardRight'>
 			{
 				who == "student" ?
 					<Routes>
-						<Route path='/' element={<StudentAccountDetailsArea who={who} />} />
+						<Route path='/' element={<StudentAccountDetailsArea who={who} setIsLogin={setIsLogin}/>} />
 						<Route path='/Institute' element={<Institute />} />
 						<Route path='/FeesPaymentArea' element={<FeesPaymentArea />} />
 						<Route path='/ShowAdmitCard' element={<ShowAdmitCard />} />
@@ -56,9 +56,9 @@ export default function PageRight({ who }) {
 					</Routes>
 					:
 					<Routes>
-						<Route path='/' element={<TeacherAccountDetailsArea who={who} />} />
+						<Route path='/' element={<TeacherAccountDetailsArea who={who} setIsLogin={setIsLogin} />} />
 						<Route path='/Batch' element={<Batch />} />
-						<Route path='/ShowStudentDetails' element={<ShowStudentDetails />} />
+						<Route path='/ShowStudentDetails/:selectBatchID' element={<ShowStudentDetails />} />
 						<Route path='/CreateAdmitCard' element={<CreateAdmitCard />} />
 						<Route path='/CreateBatchPage' element={<CreateBatchPage />} />
 						<Route path='/CreateCertificate' element={<CreateCertificate />} />
@@ -67,7 +67,7 @@ export default function PageRight({ who }) {
 						<Route path='/CreateExamTimeTable' element={<CreateExamTimeTable />} />
 						<Route path='/CreateNotice' element={<CreateNotice />} />
 						<Route path='/CreateStudyMaterial' element={<CreateStudyMaterial />} />
-						<Route path='/ShowFeesPaymentHistoryList' element={<ShowFeesPaymentHistoryList />} />
+						<Route path='/ShowFeesPaymentHistoryList/:studentID' element={<ShowFeesPaymentHistoryList />} />
 						<Route path='/Comments' element={<Comments who={who} />} />
 					</Routes>
 			}

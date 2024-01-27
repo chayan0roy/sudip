@@ -1,9 +1,11 @@
 import './StudentAccountDetailsArea.css'
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-export default function StudentAccountDetailsArea({ who }) {
+export default function StudentAccountDetailsArea({ who, setIsLogin }) {
+	const navigate = useNavigate();
 
 	const [rightData, setRightData] = useState();
 
@@ -22,6 +24,11 @@ export default function StudentAccountDetailsArea({ who }) {
 		}
 	}
 
+	const handleLogout = async () => {
+		setIsLogin(false);
+		Cookies.remove("auth_token");
+		navigate('/');
+	}
 
 	return (
 		<>
@@ -34,11 +41,12 @@ export default function StudentAccountDetailsArea({ who }) {
 							<h1>{rightData.studentName}</h1>
 						</div>
 						<div className='studentDetailsAreaBottom flex'>
+						<button onClick={handleLogout}>Logout</button>
 							<div className='studentDetails'>
 								<h3><span>Student Name :</span><span className='DetailsText'>{rightData.studentName}</span></h3>
-								<h3><span>Student ID :</span><span className='DetailsText'>35441654</span></h3>
-								<h3><span>Batch Name :</span><span className='DetailsText'>Batch 12</span></h3>
-								<h3><span>Session :</span><span className='DetailsText'>2023-2024</span></h3>
+								<h3><span>Student ID :</span><span className='DetailsText'>{rightData.studentID}</span></h3>
+								<h3><span>Batch Name :</span><span className='DetailsText'>B{rightData.batchName}</span></h3>
+								<h3><span>Session :</span><span className='DetailsText'>{rightData.session}</span></h3>
 								<h3><span>Mobile Number :</span><span className='DetailsText'>{rightData.studentMobileNumber}</span></h3>
 								<h3><span>Whatsapp Number :</span><span className='DetailsText'>{rightData.studentWhatsappNumber}</span></h3>
 								<h3><span>Email Address :</span><span className='DetailsText'>{rightData.studentEmail}</span></h3>

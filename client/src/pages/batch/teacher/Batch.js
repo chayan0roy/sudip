@@ -56,16 +56,16 @@ export default function Batch() {
                         ?
                         <>
                             <Card heading={"Create New Batch"} link={"/CreateBatchPage"} />
-                            <Card heading={"Show Student Details"} link={"/ShowStudentDetails"} selectBatchID={selectBatchID}/>
-                            <Card heading={"Create Class Time Table"} link={"/CreateClassTimeTable"} selectBatchID={selectBatchID} />
-                            <Card heading={"Create Study Material"} link={"/CreateStudyMaterial"} selectBatchID={selectBatchID} />
-                            <Card heading={"Create Admit Card"} link={"/CreateAdmitCard"} selectBatchID={selectBatchID} />
-                            <Card heading={"Create Certificate"} link={"/CreateCertificate"} selectBatchID={selectBatchID} />
-                            <Card heading={"Create Exam Result"} link={"/CreateExamResult"} selectBatchID={selectBatchID} />
-                            <Card heading={"Create Exam Time Table"} link={"/CreateExamTimeTable"} selectBatchID={selectBatchID} />
-                            <Card heading={"Create Notice"} link={"/CreateNotice"} selectBatchID={selectBatchID} />
+                            <Card heading={"Show Student Details"} link={`/ShowStudentDetails/${selectBatchID}`}/>
+                            <Card heading={"Create Class Time Table"} link={"/CreateClassTimeTable"} />
+                            <Card heading={"Create Study Material"} link={"/CreateStudyMaterial"} />
+                            <Card heading={"Create Admit Card"} link={"/CreateAdmitCard"} />
+                            <Card heading={"Create Certificate"} link={"/CreateCertificate"} />
+                            <Card heading={"Create Exam Result"} link={"/CreateExamResult"} />
+                            <Card heading={"Create Exam Time Table"} link={"/CreateExamTimeTable"} />
+                            <Card heading={"Create Notice"} link={"/CreateNotice"} />
                             <Card heading={"Comments"} link={"/Comments"}/>
-                            <Card heading={"Show Fees Payment History List"} link={"/ShowFeesPaymentHistoryList"} selectBatchID={selectBatchID} />
+                            <Card heading={"Show Fees Payment History List"} link={"/ShowFeesPaymentHistoryList"} />
                         </>
                         :
                         <>

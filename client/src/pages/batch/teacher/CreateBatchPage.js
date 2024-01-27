@@ -35,6 +35,8 @@ export default function CreateBatchPage() {
 			if (result.data.status == true) {
 				alert("Your Batch Creation Successful!!!")
 				navigate('/Batch');
+			} else if(result.data.status == false) {
+				alert("This Batch is already Exist!!!")
 			}
 		}
 	}
@@ -42,7 +44,7 @@ export default function CreateBatchPage() {
 	return (
 		<form className="Login_Register Register" onSubmit={createBatch}>
 			<div className="input_text_box_Area flex">
-				<input className='input_box' placeholder='আপনার Name' type='text' required onChange={(e) => setBatchName(e.target.value)}></input>
+				<input className='input_box' placeholder='আপনার batch Name' type='text' required onChange={(e) => setBatchName(e.target.value)}></input>
 			</div>
 			<div className="input_text_box_Area flex">
 				<input className='input_box' placeholder='আপনার password' type='password' required onChange={(e) => setBatchPassword(e.target.value)}></input>

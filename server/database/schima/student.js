@@ -28,31 +28,30 @@ const Student = new mongoose.Schema({
     studentPassword: {
         type: String
     },
+    session: {
+        type: String
+    },
     learningPurpus: {
         type: String
     },
     studentAddress: {
         type: String
     },
-    givenFees: {
-        type: String
+    dueFees: {
+        type: Number
     },
     paymentHistory: [{
-        date: {
-            type: String,
-            required: true
-        },
         screenshort: {
             type: String,
             required: true
         },
         amount: {
-            type: String,
+            type: Number,
             required: true
         }
     }],
     isApprove: {
-        type: String
+        type: Boolean
     },
     tokens: [{
         token: {

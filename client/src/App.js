@@ -41,7 +41,7 @@ function App() {
 				isLogin
 					?
 					<BrowserRouter>
-						<PrivatePage />
+						<PrivatePage setIsLogin={setIsLogin}/>
 					</BrowserRouter>
 					:
 					<BrowserRouter>

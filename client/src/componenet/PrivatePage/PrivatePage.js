@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import PageLeft from '../RightLeft/PageLeft';
 import PageRight from '../RightLeft/PageRight'
 
-export default function PrivatePage() {
+export default function PrivatePage({setIsLogin}) {
 
 	const [who, setWho] = useState();
 
@@ -29,7 +29,7 @@ export default function PrivatePage() {
 				who ?
 					<>
 						<PageLeft who={who} />
-						<PageRight who={who} />
+						<PageRight who={who} setIsLogin={setIsLogin}/>
 					</>
 					:
 					<></>

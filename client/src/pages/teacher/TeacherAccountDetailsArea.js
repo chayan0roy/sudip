@@ -1,10 +1,11 @@
 import './TeacherAccountDetailsArea.css'
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-export default function TeacherAccountDetailsArea({ who }) {
-
+export default function TeacherAccountDetailsArea({ who, setIsLogin }) {
+	const navigate = useNavigate();
 	const [rightData, setRightData] = useState();
 
 	useEffect(() => {
@@ -23,6 +24,18 @@ export default function TeacherAccountDetailsArea({ who }) {
 	}
 
 
+	const logout = () => {
+		
+	}
+
+	const handleLogout = async () => {
+		setIsLogin(false);
+		Cookies.remove("auth_token");
+		navigate('/');
+	}
+
+
+
 	return (
 		<>
 			{
@@ -34,6 +47,7 @@ export default function TeacherAccountDetailsArea({ who }) {
 							<h1>{rightData.teacherName}</h1>
 						</div>
 						<div className='studentDetailsAreaBottom flex'>
+							<button onClick={handleLogout}>Logout</button>
 							<div className='studentDetails'>
 								<h3><span>Teacher Name :</span><span className='DetailsText'>{rightData.teacherName}</span></h3>
 								<h3><span>Mobile Number :</span><span className='DetailsText'>{rightData.teacherMobileNumber}</span></h3>

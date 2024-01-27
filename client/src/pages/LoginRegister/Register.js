@@ -7,14 +7,14 @@ export default function Register() {
 
 	const navigate = useNavigate();
 	const allCatagory = ["আমি শিখে ফ্রিলান্সিং করে ইনকাম চাই", "আমি নিজের বিসনেসের জন্য শিখছি", "আমার ডিজিটাল এজেন্সি খুলতে চাই"];
-	const allBatch = ["B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20"];
+	const allBatch = ["B12", "1", "B14", "B15", "B16", "B17", "B18", "B19", "B20"];
 
 	const [viewImage, setViewImage] = useState(defaultAccountImg);
 	const [getCatagory, setGetCatagory] = useState("student");
 	const [file, setFile] = useState("");
 
 	// student
-	const [batchName, setbatchName] = useState(allBatch[0]);
+	const [batchName, setBatchName] = useState(allBatch[0]);
 	const [studentName, setStudentName] = useState("");
 	const [studentMobileNumber, setStudentMobileNumber] = useState("");
 	const [studentWhatsappNumber, setStudentWhatsappNumber] = useState("");
@@ -71,7 +71,7 @@ export default function Register() {
 			alert("Account Created!!!");
 			navigate('/');
 		} else if (result.data.status == false) {
-			alert("Account Exist!!!");
+			alert("Account Exist or batch not exist");
 			navigate('/');
 		}
 	};
@@ -100,7 +100,7 @@ export default function Register() {
 							<input className='input_box' placeholder='আপনার পুরো নাম' type='text' required onChange={(e) => setStudentName(e.target.value)}></input>
 						</div>
 						<div className="input_text_box_Area flex">
-							<select className='input_box' onChange={(c) => setbatchName(c.target.value)}>
+							<select className='input_box' onChange={(c) => setBatchName(c.target.value)}>
 								{
 									allBatch.map((c) => {
 										return (

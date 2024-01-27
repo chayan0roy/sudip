@@ -90,11 +90,19 @@ app.post('/register', upload.single("file"), async (req, res) => {
 		if (getCatagory == "student") {
 			const { studentName, batchName, studentMobileNumber, studentWhatsappNumber, studentEmail, studentPassword, learningPurpus, studentAddress } = req.body;
 			const studentExist = await Student_Schima.findOne({ studentEmail: studentEmail });
-			if (studentExist) {
+			const batchExist = await Batch_Schima.findOne({ batchName: batchName });
+			if (studentExist || !batchExist) {
 				res.send({ status: false });
 			} else {
-				const student = new Student_Schima({ profileIMG, studentName, batchName, studentMobileNumber, studentWhatsappNumber, studentEmail, studentPassword, learningPurpus, studentAddress });
+				const studentID = batchExist.studentIdCounter + 1;
+				batchExist.studentIdCounter = studentID;
+				await batchExist.save();
+				const session = batchExist.session;
+				const dueFees = batchExist.monthlyFees + batchExist.admissionFees;
+				const student = new Student_Schima({ profileIMG, studentName, batchName, studentID, studentMobileNumber, session, dueFees, studentWhatsappNumber, studentEmail, studentPassword, learningPurpus, studentAddress });
 				await student.save();
+				batchExist.studentDataList = batchExist.studentDataList.concat({ studentID: student._id.toString() });
+				await batchExist.save();
 				res.send({ status: true });
 			}
 		} else if (getCatagory == "teacher") {
@@ -124,7 +132,7 @@ app.post("/login", upload.single("file"), async (req, res) => {
 	const { getCatagory } = req.body;
 	try {
 		if (getCatagory == "student") {
-			const { batchName, studentEmail, studentPassword } = req.body;
+			const { studentEmail, studentPassword } = req.body;
 			const studentExist = await Student_Schima.findOne({ studentEmail: studentEmail });
 			if (studentExist) {
 				const isPasordMatch = await bcrypt.compare(studentPassword, studentExist.studentPassword);
@@ -198,17 +206,24 @@ app.post("/getAccountRightData", upload.single("file"), async (req, res) => {
 	try {
 		if (who == "student") {
 			const isStudentToken = await Student_Schima.findOne({ "tokens.token": token });
-			res.send(
-				{
-					profileIMG: isStudentToken.profileIMG,
-					studentName: isStudentToken.studentName,
-					studentMobileNumber: isStudentToken.studentMobileNumber,
-					studentWhatsappNumber: isStudentToken.studentWhatsappNumber,
-					studentEmail: isStudentToken.studentEmail,
-					learningPurpus: isStudentToken.learningPurpus,
-					studentAddress: isStudentToken.studentAddress
-				}
-			);
+			const studentExist = await Batch_Schima.findOne({ "studentDataList.studentID": isStudentToken._id });
+			if (studentExist) {
+				res.send(
+					{
+						profileIMG: isStudentToken.profileIMG,
+						studentName: isStudentToken.studentName,
+						studentID: isStudentToken.studentID,
+						studentMobileNumber: isStudentToken.studentMobileNumber,
+						studentWhatsappNumber: isStudentToken.studentWhatsappNumber,
+						studentEmail: isStudentToken.studentEmail,
+						learningPurpus: isStudentToken.learningPurpus,
+						studentAddress: isStudentToken.studentAddress,
+						batchName: isStudentToken.batchName,
+						session: isStudentToken.session
+					}
+				);
+			}
+
 		} else if (who == "teacher") {
 			const isTeacherToken = await Teacher_Schima.findOne({ "tokens.token": token });
 			res.send(
@@ -237,10 +252,10 @@ app.post("/getBatchId", upload.single("file"), async (req, res) => {
 	const { token } = req.body;
 	try {
 		const isTeacherToken = await Teacher_Schima.findOne({ "tokens.token": token });
-		if(isTeacherToken.batchName.length == 0) {
+		if (isTeacherToken.batchName.length == 0) {
 			res.send({ status: false });
 		} else {
-			res.send({ status: true, batchList : isTeacherToken.batchName });
+			res.send({ status: true, batchList: isTeacherToken.batchName });
 		}
 	}
 	catch (err) {
@@ -259,15 +274,16 @@ app.post("/makeBatch", upload.single("file"), async (req, res) => {
 	const { token, batchName, batchPassword, session, courseName, admissionFees, monthlyFees, studentIdCounter, classTime } = req.body;
 
 	try {
-		const isBatchName = await Batch_Schima.findOne({ batchName : batchName });
-		if(isBatchName) {
+		const isBatchName = await Batch_Schima.findOne({ batchName: batchName });
+		if (isBatchName) {
 			res.send({ status: false });
 		} else {
 			const isTeacherToken = await Teacher_Schima.findOne({ "tokens.token": token });
 			isTeacherToken.batchName = isTeacherToken.batchName.concat({ id: batchName });
 			await isTeacherToken.save();
-
 			const batch = new Batch_Schima({ batchName, batchPassword, session, courseName, admissionFees, monthlyFees, studentIdCounter, classTime });
+			await batch.save();
+			batch.teacherDataList = batch.teacherDataList.concat({ teacherID: isTeacherToken._id.toString() });
 			await batch.save();
 			res.send({ status: true });
 		}
@@ -280,84 +296,118 @@ app.post("/makeBatch", upload.single("file"), async (req, res) => {
 
 
 
-
-
 // ==================== Get Student Fees Payment Details ====================
 // ==================== Get Student Fees Payment Details ====================
 
-// app.post("/getStudentFeesPaymentDetails", upload.single("file"), async (req, res) => {
-// 	const { token, who } = req.body;
-// 	try {
-// 		if (who == "student") {
-// 			const isStudentToken = await Student_Schima.findOne({ "tokens.token": token });
-// 			res.send(
-// 				{
-// 					profileIMG: isStudentToken.profileIMG,
-// 					studentName: isStudentToken.studentName,
-// 					studentMobileNumber: isStudentToken.studentMobileNumber,
-// 					studentWhatsappNumber: isStudentToken.studentWhatsappNumber,
-// 					studentEmail: isStudentToken.studentEmail,
-// 					learningPurpus: isStudentToken.learningPurpus,
-// 					studentAddress: isStudentToken.studentAddress
-// 				}
-// 			);
-// 		} else if (who == "teacher") {
-// 			const isTeacherToken = await Teacher_Schima.findOne({ "tokens.token": token });
-// 			res.send(
-// 				{
-// 					profileIMG: isTeacherToken.profileIMG,
-// 					teacherName: isTeacherToken.teacherName,
-// 					teacherMobileNumber: isTeacherToken.teacherMobileNumber,
-// 					teacherEmail: isTeacherToken.teacherEmail
-// 				}
-// 			);
-// 		}
-// 	}
-// 	catch (err) {
-// 		res.json({ status: err });
-// 	}
-// });
+app.post("/getStudentFeesPaymentDetails", upload.single("file"), async (req, res) => {
+	const { token } = req.body;
+	try {
+		const isStudentToken = await Student_Schima.findOne({ "tokens.token": token });
+		const isbatchName = await Batch_Schima.findOne({ batchName: isStudentToken.batchName });
+		res.send(
+			{
+				monthlyFees: isbatchName.monthlyFees,
+				admissionFees: isbatchName.admissionFees,
+				dueFees: isStudentToken.dueFees,
+				paymentHistory: isStudentToken.paymentHistory
+			}
+		);
+	}
+	catch (err) {
+		res.json({ status: err });
+	}
+});
 
 
-// ==================== Get Fees Payment Details ====================
-// ==================== Get Fees Payment Details ====================
+// ==================== Get Student Details Admin ====================
+// ==================== Get Student Details Admin ====================
 
-// app.post("/getFeesPaymentDetails", upload.single("file"), async (req, res) => {
-// 	const { token } = req.body;
-// 	try {
-// 		const isStudentToken = await Student_Schima.findOne({ "tokens.token": token });
-// 			res.send(
-// 				{
-// 					profileIMG: isStudentToken.profileIMG,
-// 					studentName: isStudentToken.studentName,
-// 					studentMobileNumber: isStudentToken.studentMobileNumber,
-// 					studentWhatsappNumber: isStudentToken.studentWhatsappNumber,
-// 					studentEmail: isStudentToken.studentEmail,
-// 					learningPurpus: isStudentToken.learningPurpus,
-// 					studentAddress: isStudentToken.studentAddress
-// 				}
-// 			);
-// 	}
-// 	catch (err) {
-// 		res.json({ status: err });
-// 	}
-// });
+app.post("/getStudentDetailsAdmin", upload.single("file"), async (req, res) => {
+	const { token, batchID } = req.body;
+	const arr = [];
+	try {
+		const isTeacher = await Teacher_Schima.findOne({ "tokens.token": token });
+		if (isTeacher) {
+			const isBatch = await Batch_Schima.findOne({ "batchName": batchID });
+			for (let r of isBatch.studentDataList) {
+				const students = await Student_Schima.findOne({ _id: r.studentID });
+				arr.push(
+					{
+						id : students._id,
+						studentName : students.studentName,
+						dueFees : students.dueFees
+					}
+				)
+			}
+		}
+		res.send(arr);
+	}
+	catch (err) {
+		res.json({ status: err });
+	}
+});
+
+
+
+
+// ==================== getPaymentHistorysAdmin ====================
+// ==================== getPaymentHistorysAdmin ====================
+
+app.post("/getPaymentHistorysAdmin", upload.single("file"), async (req, res) => {
+	const { ID } = req.body;
+	try {
+		const isStudentExst = await Student_Schima.findOne({ _id : ID });
+		res.send(isStudentExst.paymentHistory);
+	}
+	catch (err) {
+		res.json({ status: err });
+	}
+});
+
+
+
+// ==================== approve ====================
+// ==================== approve ====================
+
+app.post("/approve", upload.single("file"), async (req, res) => {
+	const { ID, amount } = req.body;
+	try {
+		const isStudentExst = await Student_Schima.findOne({ _id : ID });
+		if(isStudentExst) {
+			isStudentExst.dueFees = isStudentExst.dueFees - amount;
+			isStudentExst.isApprove = false;
+			await isStudentExst.save();
+			res.json({ status: true });
+		} else {
+			res.json({ status: false });
+		}
+	}
+	catch (err) {
+		res.json({ status: err });
+	}
+});
+
+
 
 
 // ==================== Screenshort Uploaad ====================
 // ==================== Screenshort Uploaad ====================
 
-// app.post("/upload-files", upload.single("file"), async (req, res) => {
-// 	const { userNumber } = req.body;
-// 	const fileName = req.file.filename;
-// 	try {
-// 		const pdf = new Student_Schima({ userNumber, fileName });
-// 		await pdf.save();
-// 		res.send({ status: "ok" });
-// 	} catch (error) {
-// 		res.json({ status: error });
-// 	}
-// });
+app.post("/uploadFiles", upload.single("file"), async (req, res) => {
+	const { token, amount } = req.body;
+	const fileName = req.file.filename;
+	try {
+		const isStudentExist = await Student_Schima.findOne({ "tokens.token": token });
+		if (isStudentExist) {
+			isStudentExist.paymentHistory = isStudentExist.paymentHistory.concat({ screenshort: fileName, amount: amount });
+			isStudentExist.isApprove = true;
+			await isStudentExist.save();
+			res.send({ status: true });
+		}
+	} catch (error) {
+		res.json({ status: error });
+	}
+});
 
 
 

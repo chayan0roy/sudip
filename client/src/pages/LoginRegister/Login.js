@@ -5,11 +5,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import defaultAccountImg from '../../assets/accont.png';
 
 export default function Login({ setIsLogin }) {
-	const allBatch = ["B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20"];
 	const navigate = useNavigate();
 
 	const [getCatagory, setGetCatagory] = useState("student");
-	const [batchName, setbatchName] = useState("");
 
 	const [studentEmail, setStudentEmail] = useState("");
 	const [studentPassword, setStudentPassword] = useState("");
@@ -22,7 +20,6 @@ export default function Login({ setIsLogin }) {
 		formData.append("getCatagory", getCatagory);
 
 		if (getCatagory == "student") {
-			formData.append("batchName", batchName);
 			formData.append("studentEmail", studentEmail);
 			formData.append("studentPassword", studentPassword);
 		} else if ((getCatagory == "teacher")) {
@@ -64,17 +61,6 @@ export default function Login({ setIsLogin }) {
 				(getCatagory == "student")
 					?
 					<>
-						<div className="input_text_box_Area flex">
-							<select className='input_box' onChange={(c) => setbatchName(c.target.value)}>
-								{
-									allBatch.map((c) => {
-										return (
-											<option value={c}>{c}</option>
-										)
-									})
-								}
-							</select>
-						</div>
 						<div class="input_text_box_Area flex">
 							<input className='input_box flex' placeholder='Enter Your Email' type='email' required onChange={(e) => setStudentEmail(e.target.value)}></input>
 						</div>
