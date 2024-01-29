@@ -17,7 +17,7 @@ export default function ShowFeesPaymentHistoryList() {
 		const ID = params.studentID;
 		const formData = new FormData();
 		formData.append("ID", ID);
-		const result = await axios.post("https://student-management-backend.netlify.app/getPaymentHistorysAdmin", formData,);
+		const result = await axios.post("https://student-management-backend-lkly.onrender.com/getPaymentHistorysAdmin", formData,);
 		setShowPaymentHistory(result.data);
 	}
 
@@ -26,7 +26,7 @@ export default function ShowFeesPaymentHistoryList() {
 		const ID = params.studentID;
 		formData.append("ID", ID);
 		formData.append("amount", amount);
-		const result = await axios.post("https://student-management-backend.netlify.app/approve", formData,);
+		const result = await axios.post("https://student-management-backend-lkly.onrender.com/approve", formData,);
 		if(result.data.status == true) {
 			alert("Approved!!!");
 		} else {
@@ -45,7 +45,7 @@ export default function ShowFeesPaymentHistoryList() {
 					showPaymentHistory.map((sd) => {
 						return (
 							<>
-								<img src={`https://student-management-backend.netlify.app/files/` + sd.screenshort} />
+								<img src={`https://student-management-backend-lkly.onrender.com/files/` + sd.screenshort} />
 								<h3>Payment Amount {sd.amount}</h3>
 							</>
 						);

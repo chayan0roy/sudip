@@ -66,7 +66,7 @@ export default function Register() {
 			formData.append("teacherPassword", teacherPassword);
 		}
 		
-		const result = await axios.post("https://student-management-backend.netlify.app/register", formData);
+		const result = await axios.post("https://student-management-backend-lkly.onrender.com/register", formData);
 		if (result.data.status == true) {
 			alert("Account Created!!!");
 			navigate('/');

@@ -18,7 +18,7 @@ export default function PrivatePage({setIsLogin}) {
 		if (token) {
 			const formData = new FormData();
 			formData.append("token", token);
-			const result = await axios.post("https://student-management-backend.netlify.app/checkWho", formData,);
+			const result = await axios.post("https://student-management-backend-lkly.onrender.com/checkWho", formData,);
 			setWho(result.data.who);
 		}
 	}

@@ -19,7 +19,7 @@ export default function Batch() {
         if (token) {
             const formData = new FormData();
             formData.append("token", token);
-            const result = await axios.post("https://student-management-backend.netlify.app/getBatchId", formData,);
+            const result = await axios.post("https://student-management-backend-lkly.onrender.com/getBatchId", formData,);
             if (result.data.status == true) {
                 setIsBatchID(result.data.batchList);
                 setSelectBatchID(result.data.batchList[0].id)
