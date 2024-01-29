@@ -27,7 +27,7 @@ export default function Login({ setIsLogin }) {
 			formData.append("teacherPassword", teacherPassword);
 		}
 
-		const result = await axios.post("https://student-management-backend-lkly.onrender.com/login", formData);
+		const result = await axios.post("https://student.chayan.online/login", formData);
 		if (result.data.status == true) {
 			Cookies.set('auth_token', result.data.auth_token, { expires: 7 });
 			alert("Login Successfull !!!");
