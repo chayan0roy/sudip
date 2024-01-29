@@ -7,7 +7,7 @@ export default function Register() {
 
 	const navigate = useNavigate();
 	const allCatagory = ["আমি শিখে ফ্রিলান্সিং করে ইনকাম চাই", "আমি নিজের বিসনেসের জন্য শিখছি", "আমার ডিজিটাল এজেন্সি খুলতে চাই"];
-	const allBatch = ["1"];
+	const allBatch = ["12"];
 
 	const [viewImage, setViewImage] = useState(defaultAccountImg);
 	const [getCatagory, setGetCatagory] = useState("student");
