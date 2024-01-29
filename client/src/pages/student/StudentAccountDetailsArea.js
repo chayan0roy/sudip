@@ -19,7 +19,7 @@ export default function StudentAccountDetailsArea({ who, setIsLogin }) {
 			const formData = new FormData();
 			formData.append("token", token);
 			formData.append("who", who);
-			const result = await axios.post("http://localhost:5000/getAccountRightData", formData,);
+			const result = await axios.post("https://student-management-backend.netlify.app/getAccountRightData", formData,);
 			setRightData(result.data);
 		}
 	}
@@ -37,7 +37,7 @@ export default function StudentAccountDetailsArea({ who, setIsLogin }) {
 					?
 					<div className='studentDetailsArea'>
 						<div className='studentDetailsAreaTop flex'>
-							<img src={`http://localhost:5000/files/`+rightData.profileIMG}></img>
+							<img src={`https://student-management-backend.netlify.app/files/`+rightData.profileIMG}></img>
 							<h1>{rightData.studentName}</h1>
 						</div>
 						<div className='studentDetailsAreaBottom flex'>

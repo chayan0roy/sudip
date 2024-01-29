@@ -31,7 +31,7 @@ export default function CreateBatchPage() {
 			formData.append("studentIdCounter", studentIdCounter);
 			formData.append("classTime", classTime);
 			
-			const result = await axios.post("http://localhost:5000/makeBatch", formData,);
+			const result = await axios.post("https://student-management-backend.netlify.app/makeBatch", formData,);
 			if (result.data.status == true) {
 				alert("Your Batch Creation Successful!!!")
 				navigate('/Batch');

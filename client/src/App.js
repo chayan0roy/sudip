@@ -21,7 +21,7 @@ function App() {
 		if (token) {
 			const formData = new FormData();
 			formData.append("token", token);
-			const result = await axios.post("http://localhost:5000/getToken", formData,);
+			const result = await axios.post("https://student-management-backend.netlify.app/getToken", formData,);
 			if (result.data.status == true) {
 				setIsLogin(true);
 			} else {

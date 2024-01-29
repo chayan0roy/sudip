@@ -20,7 +20,7 @@ export default function ShowStudentDetails() {
 			const formData = new FormData();
 			formData.append("token", token);
 			formData.append("batchID", batchID);
-			const result = await axios.post("http://localhost:5000/getStudentDetailsAdmin", formData,);
+			const result = await axios.post("https://student-management-backend.netlify.app/getStudentDetailsAdmin", formData,);
 			setShowStdtDetails(result.data);
 		}
 	}

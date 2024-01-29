@@ -296,6 +296,7 @@ app.post("/makeBatch", upload.single("file"), async (req, res) => {
 
 
 
+
 // ==================== Get Student Fees Payment Details ====================
 // ==================== Get Student Fees Payment Details ====================
 
@@ -411,7 +412,7 @@ app.post("/uploadFiles", upload.single("file"), async (req, res) => {
 
 
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
 	console.log("Server Start");
 });

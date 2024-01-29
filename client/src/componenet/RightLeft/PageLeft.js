@@ -18,7 +18,7 @@ export default function PageLeft({ who }) {
 			const formData = new FormData();
 			formData.append("token", token);
 			formData.append("who", who);
-			const result = await axios.post("http://localhost:5000/getAccountLeftData", formData,);
+			const result = await axios.post("https://student-management-backend.netlify.app/getAccountLeftData", formData,);
 			setLeftData(result.data);
 		}
 	}
@@ -29,7 +29,7 @@ export default function PageLeft({ who }) {
 				leftData ?
 					<>
 						<div className='profileImageArea flex'>
-							<img src={`http://localhost:5000/files/`+leftData.profileIMG} />
+							<img src={`https://student-management-backend.netlify.app/files/`+leftData.profileIMG} />
 						</div>
 						<div className='profileShortDetails'>
 							{
