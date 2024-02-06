@@ -17,7 +17,7 @@ export default function ShowFeesPaymentHistoryList() {
 		const ID = params.studentID;
 		const formData = new FormData();
 		formData.append("ID", ID);
-		const result = await axios.post("https://student.chayan.online/getPaymentHistorysAdmin", formData,);
+		const result = await axios.post("http://localhost:5000/getPaymentHistorysAdmin", formData,);
 		setShowPaymentHistory(result.data);
 	}
 
@@ -26,7 +26,7 @@ export default function ShowFeesPaymentHistoryList() {
 		const ID = params.studentID;
 		formData.append("ID", ID);
 		formData.append("amount", amount);
-		const result = await axios.post("https://student.chayan.online/approve", formData,);
+		const result = await axios.post("http://localhost:5000/approve", formData,);
 		if(result.data.status == true) {
 			alert("Approved!!!");
 		} else {
@@ -45,7 +45,7 @@ export default function ShowFeesPaymentHistoryList() {
 					showPaymentHistory.map((sd) => {
 						return (
 							<>
-								<img src={`https://student.chayan.online/files/` + sd.screenshort} />
+								<img src={`http://localhost:5000/files/` + sd.screenshort} />
 								<h3>Payment Amount {sd.amount}</h3>
 							</>
 						);

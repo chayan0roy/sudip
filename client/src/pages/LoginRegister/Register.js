@@ -66,7 +66,7 @@ export default function Register() {
 			formData.append("teacherPassword", teacherPassword);
 		}
 		
-		const result = await axios.post("https://student.chayan.online/register", formData);
+		const result = await axios.post("http://localhost:5000/register", formData);
 		if (result.data.status == true) {
 			alert("Account Created!!!");
 			navigate('/');
@@ -80,7 +80,7 @@ export default function Register() {
 		<form className="Login_Register Register" onSubmit={handleRegister}>
 			<div className='input_image_box flex'>
 				<img src={viewImage} />
-				<input type="file" className="image_input" required onChange={convertUserIMG} />
+				<input type="file" className="image_input" onChange={convertUserIMG} />
 			</div>
 			<div className="input_text_box_Area flex">
 				<div className="form-check">

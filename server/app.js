@@ -5,6 +5,7 @@ const multer = require("multer");
 const dotdev = require('dotenv');
 const bcrypt = require('bcryptjs');
 
+
 const PreTid_Schima = require("./database/schima/teachersID");
 const Teacher_Schima = require("./database/schima/teacher");
 const Student_Schima = require("./database/schima/student");
@@ -84,10 +85,17 @@ app.post("/checkWho", upload.single("file"), async (req, res) => {
 
 
 app.post('/register', upload.single("file"), async (req, res) => {
-	const profileIMG = req.file.filename;
+	let profileIMG;
+	if (req.file == undefined) {
+		profileIMG = "accont.png";
+	} else {
+		profileIMG = req.file.filename;
+	}
+
 	const { getCatagory } = req.body;
 	try {
 		if (getCatagory == "student") {
+			
 			const { studentName, batchName, studentMobileNumber, studentWhatsappNumber, studentEmail, studentPassword, learningPurpus, studentAddress } = req.body;
 			const studentExist = await Student_Schima.findOne({ studentEmail: studentEmail });
 			const batchExist = await Batch_Schima.findOne({ batchName: batchName });
@@ -334,9 +342,9 @@ app.post("/getStudentDetailsAdmin", upload.single("file"), async (req, res) => {
 				const students = await Student_Schima.findOne({ _id: r.studentID });
 				arr.push(
 					{
-						id : students._id,
-						studentName : students.studentName,
-						dueFees : students.dueFees
+						id: students._id,
+						studentName: students.studentName,
+						dueFees: students.dueFees
 					}
 				)
 			}
@@ -357,7 +365,7 @@ app.post("/getStudentDetailsAdmin", upload.single("file"), async (req, res) => {
 app.post("/getPaymentHistorysAdmin", upload.single("file"), async (req, res) => {
 	const { ID } = req.body;
 	try {
-		const isStudentExst = await Student_Schima.findOne({ _id : ID });
+		const isStudentExst = await Student_Schima.findOne({ _id: ID });
 		res.send(isStudentExst.paymentHistory);
 	}
 	catch (err) {
@@ -373,8 +381,8 @@ app.post("/getPaymentHistorysAdmin", upload.single("file"), async (req, res) => 
 app.post("/approve", upload.single("file"), async (req, res) => {
 	const { ID, amount } = req.body;
 	try {
-		const isStudentExst = await Student_Schima.findOne({ _id : ID });
-		if(isStudentExst) {
+		const isStudentExst = await Student_Schima.findOne({ _id: ID });
+		if (isStudentExst) {
 			isStudentExst.dueFees = isStudentExst.dueFees - amount;
 			isStudentExst.isApprove = false;
 			await isStudentExst.save();
