@@ -21,7 +21,7 @@ export default function FeesPaymentArea() {
 		if (token) {
 			const formData = new FormData();
 			formData.append("token", token);
-			const result = await axios.post("http://localhost:5000/getStudentFeesPaymentDetails", formData,);
+			const result = await axios.post("https://student-management-backend-lkly.onrender.com/getStudentFeesPaymentDetails", formData,);
 			setFeesPaymentDetails(result.data);
 		}
 	}
@@ -44,7 +44,7 @@ export default function FeesPaymentArea() {
 		formData.append("amount", amount);
 		formData.append("file", file);
 
-		const result = await axios.post("http://localhost:5000/uploadFiles", formData);
+		const result = await axios.post("https://student-management-backend-lkly.onrender.com/uploadFiles", formData);
 		setFile();
 		setAmount();
 		if (result.data.status == true) {
