@@ -66,7 +66,7 @@ export default function Register() {
 			formData.append("teacherPassword", teacherPassword);
 		}
 		
-		const result = await axios.get("https://student.chayan.online/register", formData);
+		const result = await axios.get("https://student-management-backend-lkly.onrender.com/register", formData);
 		if (result.data.status == true) {
 			alert("Account Created!!!");
 			navigate('/');
